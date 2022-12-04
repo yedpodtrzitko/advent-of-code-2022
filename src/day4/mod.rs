@@ -1,53 +1,64 @@
-fn get_item_priority(item: char) -> i32 {
-    let ascii_code = item as i32;
-    match ascii_code {
-        65..=90 => ascii_code - 64 + 26,
-        _ => ascii_code - 96,
-    }
-}
+use regex::Regex;
 
 pub fn p1(data: &Vec<String>) -> i32 {
-    let mut priority_sum = 0;
-    for rucksack in data {
-        let diameter = rucksack.len() / 2;
-        let (c1, c2) = rucksack.split_at(diameter);
-        for c in c1.chars() {
-            if c2.contains(c) {
-                priority_sum += get_item_priority(c);
-                break;
+    let mut overlaps = 0;
+    for line in data {
+        let re_match = Regex::new(r"(\d+)\-(\d+),(\d+)\-(\d+)$").unwrap();
+        let mut ranges: Vec<i32> = vec![];
+        if line == "" {
+            continue;
+        }
+
+        for duties in re_match.captures(line).unwrap().iter().skip(1) {
+            match duties {
+                Some(m) => ranges.push(m.as_str().parse::<i32>().unwrap()),
+                None => println!("none {:?}", duties),
             }
+        }
+
+        //if d1_from <= d2_from and d1_to >= d2_to:
+        //elif d1_from >= d2_from and d1_to <= d2_to:  # d1 is subset
+        if ranges[0] <= ranges[2] && ranges[1] >= ranges[3] {
+            overlaps += 1
+        } else if ranges[0] >= ranges[2] && ranges[1] <= ranges[3] {
+            overlaps += 1
         }
     }
 
-    priority_sum
+    overlaps
+}
+
+pub fn p2(data: &Vec<String>) -> i32 {
+    let mut overlaps = 0;
+    for line in data {
+        let re_match = Regex::new(r"(\d+)\-(\d+),(\d+)\-(\d+)$").unwrap();
+        let mut ranges: Vec<i32> = vec![];
+        if line == "" {
+            continue;
+        }
+
+        for duties in re_match.captures(line).unwrap().iter().skip(1) {
+            match duties {
+                Some(m) => ranges.push(m.as_str().parse::<i32>().unwrap()),
+                None => println!("none {:?}", duties),
+            }
+        }
+
+        //if d1_from <= d2_from and d1_to >= d2_from:
+        //elif d1_from >= d2_from and d1_from <= d2_to:
+        if ranges[0] <= ranges[2] && ranges[1] >= ranges[2] {
+            overlaps += 1
+        } else if ranges[0] >= ranges[2] && ranges[0] <= ranges[3] {
+            overlaps += 1
+        }
+    }
+
+    overlaps
 }
 
 pub fn run(lines: &Vec<String>) {
     println!("part 1 {}", p1(lines));
     println!("part 2 {}", p2(lines));
-}
-
-pub fn p2(data: &Vec<String>) -> i32 {
-    let mut priority_sum = 0;
-
-    let data_len = data.len();
-    let mut offset = 0;
-    while (offset + 3) <= data_len {
-        let r1 = &data[offset];
-        let r2 = &data[offset + 1];
-        let r3 = &data[offset + 2];
-
-        for c in r1.chars() {
-            if r2.contains(c) && r3.contains(c) {
-                priority_sum += get_item_priority(c);
-                break;
-            }
-        }
-
-        offset += 3;
-    }
-
-    priority_sum
 }
 
 #[cfg(test)]
@@ -57,36 +68,26 @@ mod tests {
     #[test]
     fn test_d3_p1() {
         let test_data: Vec<String> = vec![
-            "vJrwpWtwJgWrhcsFMMfFFhFp",
-            "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
-            "PmmdzqPrVvPwwTWBwg",
-            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
-            "ttgJtRGJQctTZtZT",
-            "CrZsJsPPZsGzwwsLwLmpwMDw",
+            "2-4,6-8", "2-3,4-5", "5-7,7-9", "2-8,3-7", "6-6,4-6", "2-6,4-8",
         ]
         .iter()
         .map(|x| x.to_string())
         .collect();
 
         let res = p1(&test_data);
-        assert_eq!(res, 157);
+        assert_eq!(res, 2);
     }
 
     #[test]
     fn test_d3_p2() {
         let test_data: Vec<String> = vec![
-            "vJrwpWtwJgWrhcsFMMfFFhFp",
-            "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL",
-            "PmmdzqPrVvPwwTWBwg",
-            "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn",
-            "ttgJtRGJQctTZtZT",
-            "CrZsJsPPZsGzwwsLwLmpwMDw",
+            "2-4,6-8", "2-3,4-5", "5-7,7-9", "2-8,3-7", "6-6,4-6", "2-6,4-8",
         ]
         .iter()
         .map(|x| x.to_string())
         .collect();
 
         let res = p2(&test_data);
-        assert_eq!(res, 70);
+        assert_eq!(res, 4);
     }
 }

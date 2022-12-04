@@ -22,11 +22,6 @@ pub fn p1(data: &Vec<String>) -> i32 {
     priority_sum
 }
 
-pub fn run(lines: &Vec<String>) {
-    println!("part 1 {}", p1(lines));
-    println!("part 2 {}", p2(lines));
-}
-
 pub fn p2(data: &Vec<String>) -> i32 {
     let mut priority_sum = 0;
 
@@ -48,6 +43,11 @@ pub fn p2(data: &Vec<String>) -> i32 {
     }
 
     priority_sum
+}
+
+pub fn run(lines: &Vec<String>) {
+    println!("part 1 {}", p1(lines));
+    println!("part 2 {}", p2(lines));
 }
 
 #[cfg(test)]
