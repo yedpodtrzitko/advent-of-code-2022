@@ -37,6 +37,7 @@ pub fn p2(data: &Vec<String>) -> i32 {
             continue;
         }
 
+        let re_match = Regex::new(r"(\d+)\-(\d+),(\d+)\-(\d+)$").unwrap();
         for duties in re_match.captures(line).unwrap().iter().skip(1) {
             match duties {
                 Some(m) => ranges.push(m.as_str().parse::<i32>().unwrap()),
