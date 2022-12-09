@@ -24,16 +24,13 @@ def p1(data):
 
         diff_x = h_pos[0] - t_pos[0]
         diff_y = h_pos[1] - t_pos[1]
-        if diff_x not in (-1, 0, 1) and not diff_y:
-            t_pos[0] += 1 if diff_x > 0 else -1
-        elif diff_y not in (-1, 0, 1) and not diff_x:
-            t_pos[1] += 1 if diff_y > 0 else -1
-        elif (abs(diff_x) + abs(diff_y)) > 2:
+        if (abs(diff_x) + abs(diff_y)) > 2:
             t_pos[0] += 1 if diff_x > 0 else -1
             t_pos[1] += 1 if diff_y > 0 else -1
-        else:
-            pass
-            # print('no move')
+        elif abs(diff_x) > 1:
+            t_pos[0] += 1 if diff_x > 0 else -1
+        elif abs(diff_y) > 1:
+            t_pos[1] += 1 if diff_y > 0 else -1
 
         t_history.add(tuple(t_pos))
 
@@ -57,16 +54,13 @@ def p2(data):
 
             diff_x = all_nodes[node_idx - 1][0] - node_pos[0]
             diff_y = all_nodes[node_idx - 1][1] - node_pos[1]
-            if diff_x not in (-1, 0, 1) and not diff_y:
-                node_pos[0] += 1 if diff_x > 0 else -1
-            elif diff_y not in (-1, 0, 1) and not diff_x:
-                node_pos[1] += 1 if diff_y > 0 else -1
-            elif (abs(diff_x) + abs(diff_y)) > 2:
+            if (abs(diff_x) + abs(diff_y)) > 2:
                 node_pos[0] += 1 if diff_x > 0 else -1
                 node_pos[1] += 1 if diff_y > 0 else -1
-            else:
-                pass
-                # print('no move')
+            elif abs(diff_x) > 1:
+                node_pos[0] += 1 if diff_x > 0 else -1
+            elif abs(diff_y) > 1:
+                node_pos[1] += 1 if diff_y > 0 else -1
 
             if node_idx == 9:
                 t_history.add(tuple(node_pos))

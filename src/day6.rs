@@ -1,7 +1,5 @@
 use std::collections::HashSet;
 
-use regex::Regex;
-
 pub fn p1(data: String) -> i32 {
     let slice_length = 4;
     let mut idx = 0;

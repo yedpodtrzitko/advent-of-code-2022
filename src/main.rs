@@ -5,6 +5,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day6;
+mod day9;
 
 fn get_data(day: i32) -> Vec<String> {
     let path_str = format!("./input/day{}", day).to_string();
@@ -23,6 +24,7 @@ fn main() {
         3 => day3::run(&get_data(day)),
         4 => day4::run(&get_data(day)),
         6 => day6::run(&get_data(day)),
+        9 => day9::run(&get_data(day)),
         _ => println!("day {} not implemented yet", day),
     }
 }
